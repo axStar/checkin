@@ -18,7 +18,7 @@ logging.config.fileConfig(path.parent / 'logging.conf')
 # create logger
 logger = logging.getLogger('first')
 
-def Sendmail(header: str, content: str, receiver: str = config["email"]["receiver"], u: str = config["email"]["sender"], pw: str = config["email"]["password"]):
+def Sendmail(header: str, content: str, receiver: str = config["emailMessage"]["receiver"], u: str = config["emailMessage"]["sender"], pw: str = config["emailMessage"]["password"]):
 
     smtpObj = smtplib.SMTP("smtp.office365.com", 587)
     logger.debug("构造smtp对象成功.")
@@ -60,11 +60,12 @@ if __name__ == "__main__":
     response = checkin(owoLogin(config["owo"]["user"], config["owo"]["password"]))
     if response["ret"] == 1:
         msg = f"""{response['msg']}
-    剩余流量：{response['trafficInfo']['unUsedTraffic']}
-    -----
-    今日使用：{response['trafficInfo']['todayUsedTraffic']}
-    累计使用：{response['trafficInfo']['lastUsedTraffic']}
-    累计获得：{response['traffic']}"""
+
+剩余流量：{response['trafficInfo']['unUsedTraffic']}
+-----
+今日使用：{response['trafficInfo']['todayUsedTraffic']}
+累计使用：{response['trafficInfo']['lastUsedTraffic']}
+累计获得：{response['traffic']}"""
 
         Sendmail(f"{time.asctime(time.localtime())}|签到通知", msg, "2272613209@qq.com")
     else:
